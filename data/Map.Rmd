@@ -1,0 +1,63 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(knitr)
+library(dbplyr)
+library(dplyr)
+library(foreign)
+library(ggrepel)
+library(haven)
+library(kableExtra)
+library(tidyr)
+library(tidyverse)
+library(tidygeocoder)
+library(ggplot2)
+library(maps)
+library(ggrepel)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(rgdal)
+library(readr)
+library(maptools)
+library(ggspatial)
+library(sf)
+library(osmdata)
+library(rgeos)
+library(igraph)
+library(ggraph)
+library(leaflet)
+library(htmlwidgets)
+```
+
+
+```{r}
+# locations <- read.csv("./Kaffeehäuser.csv")
+# 
+# locations <- locations %>% 
+#    tidygeocoder::geocode(address = address, method = 'osm', 
+#           full_results = TRUE, custom_query= list(extratags = 1))
+# 
+# locations_filtered <- locations %>%
+#   select(identifier, address, lat, long)
+
+#write.csv(locations_filtered, "Kaffeehäuser_latlong.csv")
+```
+
+
+```{r}
+locations_map <- read.csv("./Kaffeehäuser_latlong.csv")
+
+m <- leaflet() %>%
+  addProviderTiles(providers$Stamen.Toner) %>%
+  setView(lng = 16.370638707130873, lat = 48.20817485951531, zoom = 14) %>%
+  addMarkers(data=locations_map, ~long, ~lat, popup=~address, label=~identifier)
+  m
+```
+
+
+```{r}
+saveWidget(m, 'map_vienna.html', selfcontained = FALSE)
+```
